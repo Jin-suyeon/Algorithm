@@ -36,7 +36,7 @@ function solution(numbers) {
       realResult.push(sumResult[i]);
     }
   }
-  let sort = realResult.sort((a, b) => a - b);
+
   return realResult.sort((a, b) => a - b);
 }
 
