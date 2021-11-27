@@ -1,24 +1,12 @@
 function solution(nums) {
-  let haveNum = nums.length / 2;
-  let result = [];
+  let removeNums = [...new Set(nums)];
+  let getNum = Math.ceil(nums.length / 2);
 
-  const permutation = (arr, num, bucket) => {
-    if (num === 0) {
-      result.push([...new Set(bucket)].length);
-      return;
-    }
+  if (removeNums.length < getNum) {
+    return removeNums.length;
+  }
 
-    for (let i = 0; i < arr.length; i++) {
-      let choice = arr[i];
-      let copyArr = arr.slice();
-      copyArr.splice(i, 1);
-      permutation(copyArr, num - 1, bucket.concat(choice));
-    }
-  };
-
-  permutation(nums, haveNum, []);
-
-  return Math.max(...result);
+  return getNum;
 }
 
 console.log(solution([3, 1, 2, 3])); // 2
