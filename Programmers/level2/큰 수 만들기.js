@@ -1,23 +1,19 @@
 function solution(number, k) {
-  number = number.split("");
-  let num = number.length - k;
-  let result = [];
+  let stack = [];
 
-  const combination = (arr, bucket, n) => {
-    if (n === 0) {
-      result.push(bucket);
-      return;
+  for (let i = 0; i < number.length; i++) {
+    let num = number[i];
+
+    while (k > 0 && stack[stack.length - 1] < num) {
+      stack.pop();
+      k--;
     }
 
-    for (let i = 0; i < arr.length; i++) {
-      let choice = arr[i];
-      let copyArr = arr.slice();
+    stack.push(num);
+  }
+  stack.splice(stack.length - k, k);
 
-      combination(copyArr.slice(i + 1), bucket + choice, n - 1);
-    }
-  };
-
-  combination(number, "", num);
-
-  return `${Math.max(...result)}`;
+  return stack.join("");
 }
+
+console.log(solution("1924", 2)); // "94"
