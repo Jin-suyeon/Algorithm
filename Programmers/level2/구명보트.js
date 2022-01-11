@@ -8,11 +8,9 @@ function solution(people, limit) {
   while (left < right) {
     if (people[left] + people[right] <= limit) {
       left++;
-      right--;
       cnt++;
-    } else {
-      right--;
     }
+    right--;
   }
 
   return people.length - cnt;
