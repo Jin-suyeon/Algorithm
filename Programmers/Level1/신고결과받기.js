@@ -3,71 +3,64 @@ function solution(id_list, report, k) {
   // 한명의 유저가 한 유저를 여러번 신고하면 1번으로 처리
   // 유저들이 받은 메일을 배열에 담아 리턴
 
-  let userNotify = {};
-  let notifyCnt = {};
-  let stopUser = [];
-  let result = [];
+  // 먼저 유저가 신고한 사람들을 알아낸다
+  // 유저들이 신고당한 횟수를 알아내고
+  // 각 유저들에게 메일이 몇개 왔는지 배열에 담아 리턴한다
 
   report = report.map((el) => el.split(" "));
+  let reportUsers = {};
+  let reportUsersCnt = {};
+  let stopUsers = [];
 
-  // report를 돌며 배열안의 첫번째 인자에 두번째 인자를 넣어준다
   for (let i = 0; i < report.length; i++) {
-    let reportUser = report[i][0];
-    let getReportUser = report[i][1];
-    if (!userNotify[reportUser]) {
-      userNotify[reportUser] = [getReportUser];
+    let user = report[i][0];
+    let reportUser = report[i][1];
+
+    if (!reportUsers[user]) {
+      reportUsers[user] = [reportUser];
     } else {
-      userNotify[reportUser].push(getReportUser);
+      reportUsers[user].push(reportUser);
     }
   }
 
-  // 중복된 이름은 제거
-  // 신고당한 유저 카운트를 세준다
-  for (let user in userNotify) {
-    let notify = userNotify[user];
-    notify = [...new Set(notify)];
+  for (let user in reportUsers) {
+    reportUsers[user] = [...new Set(reportUsers[user])];
 
-    for (let i = 0; i < notify.length; i++) {
-      if (!notifyCnt[notify[i]]) {
-        notifyCnt[notify[i]] = 1;
+    for (let u of reportUsers[user]) {
+      if (!reportUsersCnt[u]) {
+        reportUsersCnt[u] = 1;
       } else {
-        notifyCnt[notify[i]]++;
+        reportUsersCnt[u]++;
       }
     }
   }
 
-  for (let user in notifyCnt) {
-    if (notifyCnt[user] >= k) {
-      stopUser.push(user);
+  for (let user in reportUsersCnt) {
+    if (reportUsersCnt[user] >= k) {
+      stopUsers.push(user);
     }
-  }
-
-  if (stopUser.length === 0) {
-    return id_list.map((el) => (el = 0));
   }
 
   let cnt = 0;
 
-  for (let user in userNotify) {
-    let notify = userNotify[user];
-    for (let i = 0; i < notify.length; i++) {
-      if (stopUser.indexOf(notify[i]) !== -1) {
+  for (let user in reportUsers) {
+    let arr = reportUsers[user];
+    for (let i = 0; i < arr.length; i++) {
+      if (stopUsers.indexOf(arr[i]) !== -1) {
         cnt++;
       }
     }
-    userNotify[user] = cnt;
+    reportUsers[user] = cnt;
     cnt = 0;
   }
 
   for (let i = 0; i < id_list.length; i++) {
-    let user = userNotify[id_list[i]];
-
-    if (!user) {
-      result.push(0);
+    if (reportUsers[id_list[i]]) {
+      id_list[i] = reportUsers[id_list[i]];
     } else {
-      result.push(userNotify[id_list[i]]);
+      id_list[i] = 0;
     }
   }
 
-  return result;
+  return id_list;
 }
