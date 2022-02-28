@@ -5,39 +5,16 @@
 // 입출력 예시
 // numbers = [2,1,3,4,1]
 // result = [2,3,4,5,6,7]
-
 function solution(numbers) {
   let result = [];
 
-  let permutation = (arr, n, bucket) => {
-    if (n === 0) {
-      result.push(bucket);
-      return;
-    }
-    for (let i = 0; i < arr.length; i++) {
-      let choice = arr[i];
-      let copyArr = arr.slice();
-      copyArr.splice(i, 1);
-      permutation(copyArr, n - 1, bucket.concat(choice));
-    }
-  };
-  permutation(numbers, 2, []);
-
-  let sumResult = [];
-
-  for (let i = 0; i < result.length; i++) {
-    let reduce = result[i].reduce((a, b) => a + b);
-    sumResult.push(reduce);
-  }
-
-  let realResult = [];
-  for (let i = 0; i < sumResult.length; i++) {
-    if (realResult.indexOf(sumResult[i]) === -1) {
-      realResult.push(sumResult[i]);
+  for (let i = 0; i < numbers.length; i++) {
+    for (let j = i + 1; j < numbers.length; j++) {
+      result.push(numbers[i] + numbers[j]);
     }
   }
 
-  return realResult.sort((a, b) => a - b);
+  return [...new Set(result)].sort((a, b) => a - b);
 }
 
 console.log(solution([2, 1, 3, 4, 1]));
