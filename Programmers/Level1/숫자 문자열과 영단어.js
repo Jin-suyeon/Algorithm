@@ -6,42 +6,31 @@
 // result = 1478
 
 function solution(s) {
-  if (!isNaN(s)) {
-    return Number(s);
-  }
-
-  let stringArr = s.split("");
-
-  const stringNum = [
-    "zero",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ];
-
-  const num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  s = s.split("");
+  const stringNum = {
+    zero: "0",
+    one: "1",
+    two: "2",
+    three: "3",
+    four: "4",
+    five: "5",
+    six: "6",
+    seven: "7",
+    eight: "8",
+    nine: "9",
+  };
 
   let result = "";
-  let string = "";
+  let str = "";
 
-  for (let i = 0; i < stringArr.length; i++) {
-    if (num.indexOf(stringArr[i]) !== -1 && !isNaN(stringArr[i])) {
-      result = result + stringArr[i];
-    } else {
-      string = string + stringArr[i];
-      if (stringNum.indexOf(string) !== -1) {
-        let index = stringNum.indexOf(string);
-        result = result + num[index];
-        string = "";
-      } else {
-        continue;
-      }
+  for (let i = 0; i < s.length; i++) {
+    let num = /[0-9]/;
+
+    num.test(s[i]) ? (result += s[i]) : (str += s[i]);
+
+    if (stringNum[str]) {
+      result += stringNum[str];
+      str = "";
     }
   }
 
